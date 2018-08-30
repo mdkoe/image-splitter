@@ -1,12 +1,12 @@
 # Image-splitter
 
 ## インストール方法
-### -[Python](https://www.python.org/downloads/) (3.7.0) 
-- MacOS
+[Python](https://www.python.org/downloads/) (3.7.0) 
+ MacOS
 ```
 brew install python
 ```
-### [Pillow](https://pillow.readthedocs.io/en/latest/index.html) for python3 
+[Pillow](https://pillow.readthedocs.io/en/latest/index.html) for python3 
 - MacOS
 ```
 sudo pip3 install Pillow
