@@ -33,7 +33,7 @@ class Tile(object):
         return get_basename(self.filename)
 
     def generate_filename(self, directory=os.getcwd(), prefix='tile',
-                          format='png', path=True):
+                          format='jpg', path=True):
         """Construct and return a filename for this tile."""
         if self.row == 1:
             filename = prefix + '{part}.{ext}'.format(
@@ -46,10 +46,10 @@ class Tile(object):
             return filename
         return os.path.join(directory, filename)
 
-    def save(self, filename=None, format='png'):
+    def save(self, filename=None, format='jpg'):
         if not filename:
             filename = self.generate_filename(format=format)
-        self.image.save(filename, format)
+        self.image.save(filename)
         self.filename = filename
 
     def __repr__(self):
@@ -129,7 +129,7 @@ def slice(filename, number_tiles, save=True):
                    directory=os.path.dirname(filename))
     return tuple(tiles)
 
-def save_tiles(tiles, prefix='', directory=os.getcwd(), format='png'):
+def save_tiles(tiles, prefix='', directory=os.getcwd(), format='jpg'):
     for tile in tiles:
         tile.save(filename=tile.generate_filename(prefix=prefix,
                                                   directory=directory,
