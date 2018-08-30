@@ -7,7 +7,6 @@ import image_slicer
 
 if __name__ == "__main__":
     filename = sys.argv[1]
-    print(filename)
 
     zipFile = zipfile.ZipFile(filename,'r')
     for imageName in zipFile.namelist():
@@ -16,8 +15,10 @@ if __name__ == "__main__":
             if not path.exists():
                 path.mkdir()
         else:
+            print(path)
             with path.open('wb') as folder:
                 folder.write(zipFile.read(imageName))
             image_slicer.slice(path,2)
             os.remove(path)
     zipFile.close()
+    print("Complete")
