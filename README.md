@@ -2,7 +2,7 @@
 
 ## インストール方法
 [Python](https://www.python.org/downloads/) (3.7.0) 
- MacOS
+- MacOS
 ```
 brew install python
 ```
