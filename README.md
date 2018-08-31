@@ -6,10 +6,11 @@
 ```
 brew install python3
 ```
-[Pillow](https://pillow.readthedocs.io/en/latest/index.html) for python3
+[ImageMagick](https://pillow.readthedocs.io/en/latest/index.html) for python3
 - MacOS
 ```
-sudo pip3 install Pillow
+brew update
+brew install imagemagick
 ```
 
 ## Usage
