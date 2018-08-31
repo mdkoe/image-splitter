@@ -6,7 +6,7 @@
 ```
 brew install python3
 ```
-[ImageMagick](https://pillow.readthedocs.io/en/latest/index.html) for python3
+[ImageMagick](https://www.imagemagick.org/script/download.php)
 - MacOS
 ```
 brew update
