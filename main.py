@@ -2,27 +2,31 @@ import sys
 import getopt
 import zipfile
 import os
+import subprocess
 from pathlib import Path
-from math import sqrt, ceil, floor
-from PIL import Image
-
+from helpers import convert_path
 
 def slice(path):
     imageName = os.path.splitext(path)[0]
-    image = Image.open(path)
-    print(image.size)
 
-    image_w, image_h = image.size
+    #get size
+    size = subprocess.check_output(["identify", "-format", "%w %h", path])
+    size = list(map(int, size.decode('utf-8').split(" ")))
+
+    # calculator size
+    image_w, image_h = size
     splice_w = int(image_w/2)
-    splice_h = image_h
+    splice_h = int(image_h)
 
-    leftArea = (0, 0, splice_w, splice_h)
-    leftImage = image.crop(leftArea)
-    leftImage.save(imageName+"b.jpg")
+    #slice-left
+    leftArea = (convert_path(str(path)), splice_w, splice_h, 0, 0, convert_path(imageName)+"b.jpg")
+    leftCmd = "convert %s -crop '%dx%d+%d+%d' %s"%leftArea
+    os.system(leftCmd)
 
-    rightArea = (image_w - splice_w - 1 , 0, image_w, image_h)
-    rightImage = image.crop(rightArea)
-    rightImage.save(imageName+"a.jpg")
+    #slice-right
+    rightArea = (convert_path(str(path)), image_w - splice_w, image_h, splice_w, 0, convert_path(imageName)+"a.jpg")
+    rightCmd = "convert %s -crop '%dx%d+%d+%d' %s"%rightArea
+    os.system(rightCmd)
 
 if __name__ == "__main__":
     filename = sys.argv[1]
@@ -36,6 +40,7 @@ if __name__ == "__main__":
         else:
             with path.open('wb') as folder:
                 folder.write(zipFile.read(imageName))
+            print(path)
             slice(path)
             os.remove(path)
     zipFile.close()
