@@ -18,12 +18,12 @@ brew install imagemagick
 
 コンマンドに以下の通りに実行して下さい
 ```
-python3 main.py [option] filename.zip [output_path]
+python3 main.py [options] filename.zip [output_path]
 ```
 ![alt text](https://sv1.uphinhnhanh.com/images/2018/08/30/Aug-30-201816-52-43.gif)
 - output_path
   分轄の結果を保存するフォルダのパスです。
-# Option
+# options
 -  `--log`:　コマンドに分割状況を表示するかどうか価値
 
 ```
