@@ -3,6 +3,7 @@ import os
 import subprocess
 import zipfile
 from helpers import *
+from time import sleep
 
 def process(input_path,out_path,ext,quality,log):
     zip_file = zipfile.ZipFile(input_path,'r')
@@ -13,11 +14,11 @@ def process(input_path,out_path,ext,quality,log):
         else:
             with open(path,'wb') as file:
                 file.write(zip_file.read(image_name))
-            if log: print(path)
+            if log: print("%s"%path)
             slice(path,out_path,ext,quality)
             os.remove(path)
     zip_file.close()
-    if log : print("Complete")
+
     sys.exit()
 
 def slice(path,out_path,ext,quality):
@@ -35,11 +36,13 @@ def slice(path,out_path,ext,quality):
     splice_h = int(image_h)
 
     #slice-left
-    leftArea = (convert_path(str(path)), splice_w, splice_h, 0, 0, quality_commad, convert_path(image_name)+"b",ext)
-    leftCmd = "convert %s -crop '%dx%d+%d+%d'%s%s%s"%leftArea
+    image_left_name = image_name + "b" + ext
+    leftArea = (convert_path(str(path)), splice_w, splice_h, 0, 0, quality_commad, convert_path(image_left_name))
+    leftCmd = "convert %s -crop %dx%d+%d+%d%s%s"%leftArea
     os.system(leftCmd)
 
     #slice-right
-    rightArea = (convert_path(str(path)), image_w - splice_w, image_h, splice_w, 0,quality_commad, convert_path(image_name)+"a",ext)
-    rightCmd = "convert %s -crop '%dx%d+%d+%d'%s%s%s"%rightArea
+    image_right_name = image_name + "a" + ext
+    rightArea = (convert_path(str(path)), image_w - splice_w, image_h, splice_w, 0,quality_commad, convert_path(image_right_name))
+    rightCmd = "convert %s -crop %dx%d+%d+%d%s%s"%rightArea
     os.system(rightCmd)
