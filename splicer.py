@@ -43,4 +43,3 @@ def slice(path,out_path,ext,quality):
     rightArea = (convert_path(str(path)), image_w - splice_w, image_h, splice_w, 0,quality_commad, convert_path(image_name)+"a",ext)
     rightCmd = "convert %s -crop '%dx%d+%d+%d'%s%s%s"%rightArea
     os.system(rightCmd)
-    sys.exit()
