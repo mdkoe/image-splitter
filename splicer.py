@@ -8,7 +8,7 @@ from time import sleep
 def process(input_path,out_path,ext,quality,log):
     zip_file = zipfile.ZipFile(input_path,'r')
     for image_name in zip_file.namelist():
-        path = os.path.join(out_path,image_name.encode('cp437').decode('cp932'))
+        path = os.path.join(out_path,image_name.encode('cp437').decode('cp932',"ignore"))
         if image_name[-1] == '/':
             os.makedirs(os.path.dirname(path),exist_ok=True)
         else:
@@ -47,7 +47,7 @@ def slice(path,out_path,ext,quality):
         refactor_cmd = "convert %s %s -geometry +%d+%d -composite %s"%refactor
         os.system(refactor_cmd)
 
-        os.remove(temp_image_path)
+        os.remove(image_name +"temp"+ ext)
         image_h = new_h
 
     if image_aspect > get_viewer_aspect():
@@ -66,13 +66,11 @@ def slice(path,out_path,ext,quality):
     # calculator size
     splice_w = int(image_w/2)
     splice_h = int(image_h)
-
     #slice-left
     image_left_name = image_name + "b" + ext
     leftArea = (convert_path(str(path)), splice_w, splice_h, 0, 0, quality_commad, convert_path(image_left_name))
     leftCmd = "convert %s -crop %dx%d+%d+%d%s%s"%leftArea
     os.system(leftCmd)
-
     #slice-right
     image_right_name = image_name + "a" + ext
     rightArea = (convert_path(str(path)), image_w - splice_w, image_h, splice_w, 0,quality_commad, convert_path(image_right_name))
