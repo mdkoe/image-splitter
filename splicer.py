@@ -38,7 +38,7 @@ def slice(path,out_path,ext,quality):
 
     if image_aspect < get_viewer_aspect():
         # increase height
-        new_h = image_w*get_viewer_aspect()
+        new_h = round(image_w*get_viewer_aspect()+0.5)
         create_cmd = "convert -size %dx%d xc:white %s"%(image_w,new_h,temp_image_path)
         os.system(create_cmd)
 
@@ -52,7 +52,7 @@ def slice(path,out_path,ext,quality):
 
     if image_aspect > get_viewer_aspect():
         # increase width
-        new_w = image_h/get_viewer_aspect()
+        new_w = round( image_h/get_viewer_aspect() + 0.5)
         create_cmd = "convert -size %dx%d xc:white %s"%(new_w,image_h,temp_image_path)
         os.system(create_cmd)
 
