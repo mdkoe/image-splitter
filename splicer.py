@@ -22,6 +22,7 @@ def process(input_path,out_path,ext,quality,log):
     sys.exit()
 
 def slice(path,out_path,ext,quality):
+    print(path)
     image_name,image_ext = os.path.splitext(path)
     quality_commad = ' '
     if ext == '.jpg':
@@ -29,9 +30,40 @@ def slice(path,out_path,ext,quality):
     # get size
     size = subprocess.check_output(["identify", "-format", "%w %h", path])
     size = list(map(int, size.decode('utf-8').split(" ")))
+    image_w, image_h = size
+
+    # refactor image
+    temp_image_path = convert_path(image_name +"temp"+ ext)
+    image_aspect = image_h/image_w
+
+    if image_aspect < get_viewer_aspect():
+        # increase height
+        new_h = image_w*get_viewer_aspect()
+        create_cmd = "convert -size %dx%d xc:white %s"%(image_w,new_h,temp_image_path)
+        os.system(create_cmd)
+
+        increase_h = new_h - image_h
+        refactor=(temp_image_path,convert_path(str(path)),0,int(increase_h/2),convert_path(str(path)))
+        refactor_cmd = "convert %s %s -geometry +%d+%d -composite %s"%refactor
+        os.system(refactor_cmd)
+
+        os.remove(temp_image_path)
+        image_h = new_h
+
+    if image_aspect > get_viewer_aspect():
+        # increase width
+        new_w = image_h/get_viewer_aspect()
+        create_cmd = "convert -size %dx%d xc:white %s"%(new_w,image_h,temp_image_path)
+        os.system(create_cmd)
+
+        increase_w = new_w - image_w
+        refactor=(temp_image_path,convert_path(str(path)),int(increase_w/2),0,convert_path(str(path)))
+        refactor_cmd = "convert %s %s -geometry +%d+%d -composite %s"%refactor
+        os.system(refactor_cmd)
+        os.remove(image_name +"temp"+ ext)
+        image_w = new_w
 
     # calculator size
-    image_w, image_h = size
     splice_w = int(image_w/2)
     splice_h = int(image_h)
 

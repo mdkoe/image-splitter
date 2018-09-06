@@ -18,3 +18,8 @@ def show_error(argv):
 
 def show_error_quality():
    print('ERROR: value of --quality in [1,100]')
+
+def get_viewer_aspect():
+    height= 1170
+    width = 827*2
+    return height/width
